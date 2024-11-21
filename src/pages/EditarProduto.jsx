@@ -11,7 +11,7 @@ import Image from "react-bootstrap/Image";
 // Importação de componentes
 import NavBarra from "../components/NavBarra";
 
-const CadastroProduto = () => {
+const EditarProduto = () => {
   //Lista com categorias
   const cats = [
     { id: 1, nome: "Eletrônicos" },
@@ -23,14 +23,15 @@ const CadastroProduto = () => {
     { id: 7, nome: "Livros e papelaria" },
   ];
 
-    //Link produto sem imagem
-  const linkImagem = "https://www.malhariapradense.com.br/wp-content/uploads/2017/08/produto-sem-imagem.png";
+  //Link produto sem imagem
+  const linkImagem =
+    "https://www.malhariapradense.com.br/wp-content/uploads/2017/08/produto-sem-imagem.png";
 
   return (
     <div>
       <NavBarra />
       <Container>
-        <h1>Cadastrar Produtos</h1>
+        <h1>Editar Produtos</h1>
         <form className="mt-3">
           <Row>
             <Col xs={6}>
@@ -109,7 +110,7 @@ const CadastroProduto = () => {
 
           {/* Botão para enviar o formulário de cadastro de produto */}
           <Button variant="primary" size="lg" type="submit">
-            Cadastrar
+            Editar
           </Button>
         </form>
       </Container>
@@ -117,4 +118,4 @@ const CadastroProduto = () => {
   );
 };
 
-export default CadastroProduto;
+export default EditarProduto;
