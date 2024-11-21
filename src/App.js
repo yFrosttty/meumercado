@@ -7,9 +7,7 @@ import "./App.css";
 // Importação de páginas
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-
-// Importação de componentes
-import NavBarra from "./components/NavBarra";
+import CadastroProduto from "./pages/CadastroProduto";
 
 //Importação do gerenciador de rotas
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -18,11 +16,11 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      <NavBarra />
         <Routes>
           <Route path="/" element={<Login />}/>
           <Route path="/login" element={<Login />}/>  
-          <Route path="/home" element={<Home />}/>        
+          <Route path="/home" element={<Home />}/> 
+          <Route path="/produto/cadastrar" element={<CadastroProduto />}/>       
         </Routes>
       </BrowserRouter>
     </div>

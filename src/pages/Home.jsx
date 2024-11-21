@@ -1,5 +1,7 @@
 import React from "react";
 import CardProduto from "../components/CardProduto";
+import Container from "react-bootstrap/Container";
+
 
 const Home = () => {
   const produtos = [
