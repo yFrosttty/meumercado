@@ -1,31 +1,30 @@
 // Importação do bootstrap
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-// Importação estilo CSS padrão
-import './App.css';
+//Importação estilo CSS padrão
+import "./App.css";
 
 // Importação de páginas
-import Login from './pages/Login';
-import Home from './pages/Home';
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import CadastroProduto from "./pages/CadastroProduto";
+import EditarProduto from "./pages/EditarProduto";
 
-// Importação de componentes
-import NavBarra from './components/NavBarra';
+//Importação do gerenciador de rotas
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-// Importação do gerenciador de rotas
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 function App() {
   return (
     <div className="App">
-        <BrowserRouter>
-        <NavBarra />
+      <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/home' element={<Home />} />
+          <Route path="/" element={<Login />}/>
+          <Route path="/login" element={<Login />}/>  
+          <Route path="/home" element={<Home />}/> 
+          <Route path="/produto/cadastrar" element={<CadastroProduto />}/>  
+          <Route path="/produto/editar/:id" element={<EditarProduto />}/>     
         </Routes>
-
-        </BrowserRouter>
+      </BrowserRouter>
     </div>
   );
 }
