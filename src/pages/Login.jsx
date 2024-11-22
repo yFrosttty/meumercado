@@ -8,6 +8,9 @@ import Alert from "react-bootstrap/Alert";
 // Importando o hook useState para monitorar a mudança das variáveis
 import { useState } from "react";
 
+//Importação do navigate pra transitar entre páginas
+import { useNavigate} from "react-router-dom";
+
 const Login = () => {
   //Variáveis pra guardar as informações digitadas pelo usuário
   const [email, setEmail] = useState("");
@@ -18,10 +21,59 @@ const Login = () => {
   const [alertMensagem, setAlertMensagem] = useState("");
   const [alertVariant, setAlertVariant] = useState("danger");
 
+  //Lista com usuarios
+  const usuarios = [
+    { id: 1, nome: "Gregory", email:"gregory@gmail.com", senha:"1" },
+    { id: 2, nome: "Cristiano", email:"cristiano@gmail.com", senha:"7" },
+  ]
+
+  // Criando o navigate
+  const navigate = useNavigate()
+
+  // Função pra guardar na memória do navegador as informações do usuário
+  const gravarLocalStorage = (usuario) =>{
+    localStorage.setItem("userName", usuario.nome)
+    localStorage.setItem("email", usuario.email)
+  }
+
+  //Função pra tratar os dados de login
+  const handleLogin = async (e) => {
+    //Previne a página de ser recarregada
+    e.preventDefault();
+
+    // Verifica se há aquele usuário digitados na lista 
+    const userToFind = usuarios.find(
+      (user)=>user.email == email
+    )
+    if (email != "") {
+      if (senha != "") {
+        if(userToFind != undefined && userToFind.senha == senha){
+          gravarLocalStorage(userToFind)
+          setAlertClass("mb-3 mt-2");
+          setAlertVariant("success")
+          setAlertMensagem("Login efetuado com sucesso");
+          alert("Login efetuado com sucesso")
+          navigate("/home")
+        }
+        else{
+          setAlertClass("mb-3 mt-2");
+          setAlertMensagem("Usuário ou senha inválidos");
+        }
+      } 
+      else {
+        setAlertClass("mb-3 mt-2");
+        setAlertMensagem("O campo senha não pode ser vazio");
+      }
+    } 
+    else {
+      setAlertClass("mb-3 mt-2");
+      setAlertMensagem("O campo email não pode ser vazio");
+    }
+  };
   return (
     <div>
       <Container
-        style={{ background: "dodgerblue", height: "100vh" }}
+        style={{ height: "100vh" }}
         className="justify-content-center align-content-center"
       >
         {/* Icone de login */}
@@ -31,40 +83,45 @@ const Login = () => {
         >
           login
         </span>
+        <Form style={{ width: "75%", margin: "auto" }} onSubmit={handleLogin}>
+          {/* Caixinha de email */}
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Email"
+            className="mb-3"
+          >
+            <Form.Control
+              type="email"
+              placeholder="name@example.com"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+          </FloatingLabel>
 
-        {/* Caixinha de email */}
-        <FloatingLabel controlId="floatingInput" label="Email" className="mb-3">
-          <Form.Control
-            type="email"
-            placeholder="name@example.com"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </FloatingLabel>
+          {/* Caixinha de senha */}
+          <FloatingLabel controlId="floatingPassword" label="Senha">
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={senha}
+              onChange={(e) => {
+                setSenha(e.target.value);
+              }}
+            />
+          </FloatingLabel>
 
-        {/* Caixinha de senha */}
-        <FloatingLabel controlId="floatingPassword" label="Senha">
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            value={senha}
-            onChange={(e) => {
-              setSenha(e.target.value);
-            }}
-          />
-        </FloatingLabel>
+          {/* Alerta caso haja erro */}
+          <Alert variant={alertVariant} className={alertClass}>
+            {alertMensagem}
+          </Alert>
 
-        {/* Alerta caso haja erro */}
-        <Alert variant={alertVariant} className={alertClass}>
-          {alertMensagem}
-        </Alert>
-
-        {/* Botao pra enviar o formulário */}
-        <Button variant="light" className="mt-4" size="lg" href="/home">
-          Login
-        </Button>
+          {/* Botao pra enviar o formulário */}
+          <Button variant="light" type="submit" className="mt-4" size="lg">
+            Login
+          </Button>
+        </Form>
       </Container>
     </div>
   );
