@@ -6,39 +6,31 @@ import Container from "react-bootstrap/Container";
 // Importação de componentes
 import NavBarra from "../components/NavBarra";
 
+// Importando o hook useState para monitorar a mudança das variáveis
+import { useState, useEffect } from "react";
+
+// Url da api
+const url = "http://localhost:5000/produtos"
+
 const Home = () => {
-  const produtos = [
-    {
-      id: 1,
-      nome: "Shampoo Cr7",
-      descricao: "Melhor shampoo do mundo",
-      preco: 7.77,
-      categoria: "Saúde e beleza",
-      imagemUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAiGeCC3KhBPz8xa_dcPdPor2D__CuueBzeA&s",
-    },
-
-    {
-      id: 2,
-      nome: "Dolly Guaraná",
-      descricao: "O sabor brasileiro",
-      preco: 0.99,
-      categoria: "Alimentos",
-      imagemUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZBZMRU96Mx3KWq03iGSKYCtlF5ZfrTQr0fw&s",
-    },
-
-    {
-      id: 3,
-      nome: "Peneira",
-      descricao: "Uma peneira, sem mais",
-      preco: 2.5,
-      categoria: "Utensílios",
-      imagemUrl:
-        "https://cdn.leroymerlin.com.br/products/peneira_em_aco_inox_21cm_mimo_style_1566872911_3d4d_600x600.jpg",
-    },
-  ];
-
+    //Lista com produtos
+    const [produtos, setProdutos] = useState([])
+    //UseEffect pra puxar os dados da api
+    useEffect(()=>{
+      async function fetchData(){
+        try{
+            const req = await fetch(url)
+            const prods = await req.json()
+            console.log(prods)
+            setProdutos(prods)
+        }
+        catch(erro){
+          console.log(erro.message)
+        }
+      }
+      fetchData()
+    }, [])
+  
   return (
     <div>
       <NavBarra />

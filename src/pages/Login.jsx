@@ -6,10 +6,13 @@ import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 
 // Importando o hook useState para monitorar a mudança das variáveis
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 //Importação do navigate pra transitar entre páginas
 import { useNavigate} from "react-router-dom";
+
+// Url da api
+const url = "http://localhost:5000/usuarios"
 
 const Login = () => {
   //Variáveis pra guardar as informações digitadas pelo usuário
@@ -22,10 +25,23 @@ const Login = () => {
   const [alertVariant, setAlertVariant] = useState("danger");
 
   //Lista com usuarios
-  const usuarios = [
-    { id: 1, nome: "Gregory", email:"gregory@gmail.com", senha:"1" },
-    { id: 2, nome: "Cristiano", email:"cristiano@gmail.com", senha:"7" },
-  ]
+  const [usuarios, setUsuarios] = useState([])
+
+  //UseEffect pra puxar os dados da api
+  useEffect(()=>{
+    async function fetchData(){
+      try{
+          const req = await fetch(url)
+          const users = await req.json()
+          console.log(users)
+          setUsuarios(users)
+      }
+      catch(erro){
+        console.log(erro.message)
+      }
+    }
+    fetchData()
+  }, [])
 
   // Criando o navigate
   const navigate = useNavigate()

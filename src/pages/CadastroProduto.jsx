@@ -12,22 +12,33 @@ import Image from "react-bootstrap/Image";
 import NavBarra from "../components/NavBarra";
 
 // Importando o hook useState para monitorar a mudança das variáveis
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 //Importação do navigate pra transitar entre páginas
 import { useNavigate } from "react-router-dom";
 
+// Url da api
+const url = "http://localhost:5000/categorias"
+
 const CadastroProduto = () => {
-  //Lista com categorias
-  const cats = [
-    { id: 1, nome: "Eletrônicos" },
-    { id: 2, nome: "Moda e Vestuário" },
-    { id: 3, nome: "Alimentos e Bebidas" },
-    { id: 4, nome: "Saúde e Beleza" },
-    { id: 5, nome: "Esportes e lazer" },
-    { id: 6, nome: "Brinquedos e jogos" },
-    { id: 7, nome: "Livros e papelaria" },
-  ];
+ //Lista com categorias
+ const [categorias, setCategorias] = useState([])
+ //UseEffect pra puxar os dados da api
+ useEffect(()=>{
+   async function fetchData(){
+     try{
+         const req = await fetch(url)
+         const cate = await req.json()
+         console.log(cate)
+         setCategorias(cate)
+     }
+     catch(erro){
+       console.log(erro.message)
+     }
+   }
+   fetchData()
+ }, [])
+
 
   //Link produto sem imagem
   const linkImagem =
@@ -52,7 +63,6 @@ const CadastroProduto = () => {
   const handleSubmit = async (e) => {
     //Previne a página de ser recarregada
     e.preventDefault();
-
     if (nome != "") {
       if (descricao != "") {
         if (preco != "") {
@@ -126,7 +136,7 @@ const CadastroProduto = () => {
                     setCategoria(e.target.value);
                   }}
                 >
-                  {cats.map((cat) => (
+                  {categorias.map((cat) => (
                     <option key={cat.id} value={cat.nome}>
                       {cat.nome}
                     </option>
