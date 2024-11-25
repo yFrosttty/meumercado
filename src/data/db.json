@@ -42,7 +42,7 @@
     }
 ],
 
-   "cats": [
+   "categorias": [
     { "id": 1, "nome": "Eletrônicos" },
     { "id": 2, "nome": "Moda e Vestuário" },
     { "id": 3, "nome": "Alimentos e Bebidas" },
