@@ -29,7 +29,7 @@ const Home = () => {
         }
       }
       fetchData()
-    }, [])
+    }, [produtos])
   
   return (
     <div>

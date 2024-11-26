@@ -12,33 +12,32 @@ import Image from "react-bootstrap/Image";
 import NavBarra from "../components/NavBarra";
 
 // Importando o hook useState para monitorar a mudança das variáveis
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 //Importação do navigate pra transitar entre páginas
 import { useNavigate } from "react-router-dom";
 
 // Url da api
-const url = "http://localhost:5000/categorias"
+const urlCate = "http://localhost:5000/categorias";
+const urlProd = "http://localhost:5000/produtos";
 
 const CadastroProduto = () => {
- //Lista com categorias
- const [categorias, setCategorias] = useState([])
- //UseEffect pra puxar os dados da api
- useEffect(()=>{
-   async function fetchData(){
-     try{
-         const req = await fetch(url)
-         const cate = await req.json()
-         console.log(cate)
-         setCategorias(cate)
-     }
-     catch(erro){
-       console.log(erro.message)
-     }
-   }
-   fetchData()
- }, [])
-
+  //Lista com categorias
+  const [categorias, setCategorias] = useState([]);
+  //UseEffect pra puxar os dados da api
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const req = await fetch(urlCate);
+        const cate = await req.json();
+        console.log(cate);
+        setCategorias(cate);
+      } catch (erro) {
+        console.log(erro.message);
+      }
+    }
+    fetchData();
+  }, []);
 
   //Link produto sem imagem
   const linkImagem =
@@ -47,9 +46,9 @@ const CadastroProduto = () => {
   //Variáveis para o produto
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [categoria, setCategoria] = useState("");
+  const [categoria, setCategoria] = useState("Eletrônicos");
   const [preco, setPreco] = useState("");
-  const [imagem, setImagem] = useState("");
+  const [imagemUrl, setImagemUrl] = useState("");
 
   //Variáveis para o alerta
   const [alertClass, setAlertClass] = useState("mb-3 d-none");
@@ -63,17 +62,31 @@ const CadastroProduto = () => {
   const handleSubmit = async (e) => {
     //Previne a página de ser recarregada
     e.preventDefault();
+
     if (nome != "") {
       if (descricao != "") {
         if (preco != "") {
-          const produto = { nome, descricao, categoria, preco, imagem };
+          const produto = { nome, descricao, categoria, preco, imagemUrl };
           console.log(produto);
-          setAlertClass("mb-3 mt-2");
-          setAlertVariant("success");
-          setAlertMensagem("Produto cadastrado com sucesso");
-          alert("Produto cadastrado com sucesso");
-          navigate("/home");
-        } else {
+          try {
+            const req = await fetch(urlProd, {
+              method: "POST",
+              headers: { "Content-type": "application/json" },
+              body: JSON.stringify(produto),
+            });
+            const res = req.json();
+            console.log(res);
+            setAlertClass("mb-3 mt-2");
+            setAlertVariant("success");
+            setAlertMensagem("Produto cadastrado com sucesso");
+            alert("Produto cadastrado com sucesso");
+            // navigate("/home");
+          } 
+          catch (error) {
+            console.log(error);
+          }
+        } 
+        else {
           setAlertClass("mb-3 mt-2");
           setAlertMensagem("O campo preço não pode ser vazio");
         }
@@ -172,15 +185,15 @@ const CadastroProduto = () => {
                   <Form.Control
                     type="text"
                     placeholder="Envie o link da imagem do produto"
-                    value={imagem}
+                    value={imagemUrl}
                     onChange={(e) => {
-                      setImagem(e.target.value);
+                      setImagemUrl(e.target.value);
                     }}
                   />
                 </FloatingLabel>
 
                 <Image
-                  src={imagem == "" ? linkImagem : imagem}
+                  src={imagemUrl == "" ? linkImagem : imagemUrl}
                   rounded
                   width={300}
                   height={300}
