@@ -79,7 +79,7 @@ useEffect(() => {
       }
     }
     fetchData()
-  })
+  }, []);
 
 
   //Função pra lidar com o envio dos dados
@@ -102,8 +102,8 @@ useEffect(() => {
             console.log(res);
             setAlertClass("mb-3 mt-2");
             setAlertVariant("success");
-            setAlertMensagem("Produto cadastrado com sucesso");
-            alert("Produto cadastrado com sucesso");
+            setAlertMensagem("Produto editado com sucesso");
+            alert("Produto editado com sucesso");
             // navigate("/home");
           } 
           catch (error) {
