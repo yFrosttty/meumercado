@@ -1,31 +1,36 @@
 // importando components do bootstrap
-import React, { useState, useEffect} from "react";
+import React from "react";
 import CardProduto from "../components/CardProduto";
 import Container from "react-bootstrap/Container";
 
 // Importação de componentes
 import NavBarra from "../components/NavBarra";
 
+// Importando o hook useState para monitorar a mudança das variáveis
+import { useState, useEffect } from "react";
+
+// Url da api
 const url = "http://localhost:5000/produtos"
 
 const Home = () => {
-
-  const [produtos, setProdutos] = useState([]);
-
-  useEffect(() =>{
-    async function fetchData(){
-      try{
-        const req = await fetch(url)
-        const prods = await req.json()
-        console.log(prods)
-        setProdutos(prods)
+    //Lista com produtos
+    const [produtos, setProdutos] = useState([])
+    //UseEffect pra puxar os dados da api
+    useEffect(()=>{
+      async function fetchData(){
+        try{
+            const req = await fetch(url)
+            const prods = await req.json()
+            console.log(prods)
+            setProdutos(prods)
+        }
+        catch(erro){
+          console.log(erro.message)
+        }
       }
-      catch(error){
-        console.log(error.message)
-      }
-    }
-    fetchData();
-  }, [])
+      fetchData()
+    }, [produtos])
+  
   return (
     <div>
       <NavBarra />

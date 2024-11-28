@@ -11,10 +11,14 @@ import { useState, useEffect } from "react";
 //Importação do navigate pra transitar entre páginas
 import { useNavigate} from "react-router-dom";
 
+// Url da api
 const url = "http://localhost:5000/usuarios"
 
-
 const Login = () => {
+  //Resetar localstorage
+  localStorage.removeItem("userName")
+  localStorage.removeItem("email")
+  
   //Variáveis pra guardar as informações digitadas pelo usuário
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -26,24 +30,22 @@ const Login = () => {
 
   //Lista com usuarios
   const [usuarios, setUsuarios] = useState([])
-    
-    //UseEffect para puxar dados da api
-    useEffect(() =>{
-      async function fetchData(){
-        try{
+
+  //UseEffect pra puxar os dados da api
+  useEffect(()=>{
+    async function fetchData(){
+      try{
           const req = await fetch(url)
           const users = await req.json()
           console.log(users)
           setUsuarios(users)
-        }
-        catch(error){
-          console.log(error.message)
-        }
       }
-      fetchData();
-    }, [])
-
-  
+      catch(erro){
+        console.log(erro.message)
+      }
+    }
+    fetchData()
+  }, [])
 
   // Criando o navigate
   const navigate = useNavigate()
